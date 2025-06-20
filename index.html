@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Efootball Premier Showdown Fixture Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f2f2f2;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      font-size: 14px;
+      margin-bottom: 10px; /* Added some space below textarea */
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 15px; /* Adjusted padding for better button appearance */
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    button + button { /* Add space between buttons */
+        margin-left: 10px;
+    }
+    .matchday {
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    h3 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      padding: 10px 12px; /* Adjusted padding for better cell spacing */
+      border: 1px solid #ddd; /* Lighter border for tables */
+      text-align: center;
+    }
+    th {
+      background-color: #e9ecef; /* Slightly darker background for headers */
+      font-weight: bold;
+    }
+    .section-header {
+      margin-top: 40px;
+      font-size: 28px; /* Slightly larger for prominence */
+      color: #0056b3; /* A bit more vibrant color */
+      border-bottom: 2px solid #007bff; /* Underline for section headers */
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Efootball Premier Showdown Fixture Generator</h2>
+  <p>Enter your team names (one per line):</p>
+  <textarea id="teamInput">
+Shabana
+Manchester city
+Team badimalo 
+Huncho
+Rio united
+Crystal palace
+Palermo fc
+Wicker fc
+Still calvins 
+Creative hands</textarea>
+  <br>
+  <button onclick="generateFixtures()">Generate Fixtures</button>
+  <button onclick="downloadFixtures()">Download as .txt</button>
+
+  <div id="output"></div>
+
+  <script>
+    let fixturesText = '';
+
+    function generateFixtures() {
+      const input = document.getElementById('teamInput').value.trim();
+      const teams = input.split('\n').map(t => t.trim()).filter(Boolean);
+      const outputDiv = document.getElementById('output');
+      outputDiv.innerHTML = '';
+      fixturesText = ''; // Clear previous fixtures
+
+      // Round-robin algorithm implementation
+      const roundRobin = (teams) => {
+        const n = teams.length;
+        const results = [];
+        let teamList = [...teams]; // Create a mutable copy
+
+        // Add a 'BYE' team if the number of teams is odd
+        if (n % 2 !== 0) {
+          teamList.push('BYE');
+        }
+
+        // Loop for n-1 rounds (each team plays n-1 opponents)
+        for (let round = 0; round < teamList.length - 1; round++) {
+          const roundMatches = [];
+          // Pair teams: first with last, second with second-to-last, etc.
+          for (let i = 0; i < teamList.length / 2; i++) {
+            const home = teamList[i];
+            const away = teamList[teamList.length - 1 - i];
+
+            // Only add matches if neither team is 'BYE'
+            if (home !== 'BYE' && away !== 'BYE') {
+              roundMatches.push([home, away]);
+            }
+          }
+          results.push(roundMatches); // Store matches for the current round
+
+          // Rotate teams for the next round (fixed first team)
+          const fixed = teamList[0];
+          const rotated = teamList.slice(1); // Get all teams except the first
+          rotated.unshift(rotated.pop()); // Move the last team to the second position
+          teamList = [fixed, ...rotated]; // Reconstruct the team list
+        }
+        return results;
+      };
+
+      // Generate fixtures for the first leg
+      const firstLeg = roundRobin(teams);
+      // Generate fixtures for the second leg by swapping home/away from first leg
+      const secondLeg = firstLeg.map(round =>
+        round.map(match => [match[1], match[0]])
+      );
+
+      // --- FIRST LEG DISPLAY ---
+      let matchday = 1;
+      const firstLegHeader = document.createElement('h2');
+      firstLegHeader.className = 'section-header';
+      firstLegHeader.textContent = '🏆 First Leg Fixtures';
+      outputDiv.appendChild(firstLegHeader);
+
+      firstLeg.forEach(round => {
+        const period = (matchday % 2 === 1) ? 'Morning' : 'Afternoon';
+
+        // Add to the text string for download
+        fixturesText += `--- First Leg - Matchday ${matchday} (${period}) ---\n`;
+        fixturesText += round.map(m => `${m[0]} vs ${m[1]}`).join('\n') + '\n\n';
+
+        // Create HTML elements for display
+        const matchdayDiv = document.createElement('div');
+        matchdayDiv.className = 'matchday';
+        matchdayDiv.innerHTML = `<h3>Matchday ${matchday} - ${period} Fixtures</h3>
+          <table>
+            <thead><tr><th>Home</th><th>Away</th></tr></thead>
+            <tbody>
+              ${round.map(m => `<tr><td>${m[0]}</td><td>${m[1]}</td></tr>`).join('')}
+            </tbody>
+          </table>`;
+        outputDiv.appendChild(matchdayDiv);
+        matchday++;
+      });
+
+      // --- SECOND LEG DISPLAY ---
+      const secondLegHeader = document.createElement('h2');
+      secondLegHeader.className = 'section-header';
+      secondLegHeader.textContent = '🏆 Second Leg Fixtures';
+      outputDiv.appendChild(secondLegHeader);
+
+      secondLeg.forEach(round => {
+        const period = (matchday % 2 === 1) ? 'Morning' : 'Afternoon';
+
+        // Add to the text string for download
+        fixturesText += `--- Second Leg - Matchday ${matchday} (${period}) ---\n`;
+        fixturesText += round.map(m => `${m[0]} vs ${m[1]}`).join('\n') + '\n\n';
+
+        // Create HTML elements for display
+        const matchdayDiv = document.createElement('div');
+        matchdayDiv.className = 'matchday';
+        matchdayDiv.innerHTML = `<h3>Matchday ${matchday} - ${period} Fixtures</h3>
+          <table>
+            <thead><tr><th>Home</th><th>Away</th></tr></thead>
+            <tbody>
+              ${round.map(m => `<tr><td>${m[0]}</td><td>${m[1]}</td></tr>`).join('')}
+            </tbody>
+          </table>`;
+        outputDiv.appendChild(matchdayDiv);
+        matchday++;
+      });
+    }
+
+    // Function to download the generated fixtures as a text file
+    function downloadFixtures() {
+      if (!fixturesText) {
+        alert('Please generate the fixtures first before attempting to download.');
+        return;
+      }
+
+      // Create a Blob containing the fixtures text
+      const blob = new Blob([fixturesText], { type: 'text/plain' });
+      // Create a temporary anchor element
+      const link = document.createElement('a');
+      link.download = 'Efootball_Fixtures.txt'; // Set the download file name
+      link.href = window.URL.createObjectURL(blob); // Create a URL for the Blob
+      link.click(); // Programmatically click the link to trigger download
+      window.URL.revokeObjectURL(link.href); // Clean up the object URL
+    }
+  </script>
+
+</body>
+</html>
