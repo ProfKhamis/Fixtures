@@ -1,167 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Efootball Fixture Generator</title>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3900846271931081"
-     crossorigin="anonymous"></script>
-  <meta name="google-site-verification" content="rHChEQlQkLZgkDgCu1eowiMNZEfXHrXud74J4kjvwak" />
-  <title>Konami Fixtures – Efootball Match Generator</title>
-<meta name="description" content="Generate and manage Efootball fixtures with professional tools for leagues, cups, and tournaments. Simple, fast, and fully mobile optimized.">
-<meta name="keywords" content="efootball fixtures, football fixture generator, epl fixtures, uefa fixtures, konami football app, pes fixtures, tournament maker">
-<meta name="robots" content="index, follow">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="canonical" href="https://konamifixtures.vercel.app/" />
-<meta name="description" content="Generate and download Efootball Premier fixtures easily. Create matchdays and download schedules.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://konamifixtures.vercel.app/">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efootball Fixture Generator</title>
+    <meta name="description" content="Generate and manage Efootball fixtures with professional tools for leagues, cups, and tournaments. Simple, fast, and fully mobile optimized.">
+    <meta name="keywords" content="efootball fixtures, football fixture generator, epl fixtures, uefa fixtures, konami football app, pes fixtures, tournament maker">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://konamifixtures.vercel.app/" />
+    <meta name="google-site-verification" content="rHChEQlQkLZgkDgCu1eowiMNZEfXHrXud74J4kjvwak" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3900846271931081" crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Roboto+Mono&display=swap" rel="stylesheet">
+
+
     <style>
-      
         body {
             font-family: Arial, sans-serif;
-            padding: 20px;
             background: #f2f2f2;
             text-align: center;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            justify-content: space-between;
         }
+
+        /* Navigation Bar Styling */
+        nav {
+            background-color: #ffffff;
+            padding: 15px 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.5em; /* Slightly smaller to fit "Efootball Fixture Generator" */
+            color: #007bff;
+            text-decoration: none;
+            white-space: nowrap; /* Keep logo on one line */
+            transition: color 0.3s ease;
+        }
+
+        .logo:hover {
+            color: #0056b3;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center; /* Align items vertically */
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 1em;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: #e9ecef;
+            color: #007bff;
+        }
+
+        .nav-button {
+            display: inline-block;
+            padding: 8px 15px; /* Smaller padding for nav bar */
+            font-size: 0.9em; /* Smaller font for nav bar */
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745; /* Green for "Get Started" */
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            white-space: nowrap; /* Keep button text on one line */
+        }
+
+        .nav-button:hover {
+            background-color: #218838;
+            transform: translateY(-1px);
+        }
+        /* End Navigation Bar Styling */
+
+        /* --- CONTAINER STYLING FOR CENTERING AND FIT --- */
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            max-width: 800px; /* Maximum width for the content area */
+            width: 90%; /* Responsive width: 90% of parent, up to max-width */
+            margin: 40px auto; /* Centers the container horizontally */
+            padding: 30px; /* Increased padding for more internal space */
             background: white;
             border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Slightly stronger and more defined shadow */
             text-align: left;
-            flex-grow: 1;
+            flex-grow: 1; /* Allows container to grow and push footer down */
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: center; /* Vertically center content if container is taller than content */
+            align-items: center; /* Ensure content like paragraphs/buttons are centered within */
+            box-sizing: border-box; /* Include padding in the width calculation */
         }
-        h1 {
-    color: #007bff;
-    font-size: 3em;
-    margin-bottom: 20px;
-    animation: fadeInDown 1s ease-out;
-    top: 0;
-
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 10px 0;
-    border-bottom: 3px solid #0056b3;
-    display: inline-block;
-}
+        /* --- END CONTAINER STYLING --- */
+        
         #intro-text {
             font-size: 1.1em;
             line-height: 1.6;
-            margin-bottom: 15px;
+            margin-bottom: 25px; /* Increased margin for more separation */
+            text-align: center;
+            max-width: 600px; /* Constrain intro text width for better readability */
         }
         #explanation-content {
-            /* Removed min-height, max-height, overflow-y as we're dynamically managing content lines */
             border-left: 5px solid #007bff;
             padding-left: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 30px; /* Increased margin */
             font-size: 1.1em;
             line-height: 1.6;
             position: relative;
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
-            min-height: 150px; /* Give some initial space */
-            display: flex; /* Use flexbox to align cursor at the end of typed content */
+            min-height: 180px; /* Slightly increased min-height for typing animation */
+            display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            text-align: left; /* Ensure typed text aligns left within its box */
+            width: 100%; /* Ensure it takes full available width within container */
+            box-sizing: border-box;
         }
 
         .step-heading {
             color: #0056b3;
-            font-size: 1.8em;
-            margin: 0 0 10px 0; /* Control margin for heading */
-            display: block; /* Ensures heading takes its own line */
-            opacity: 0; /* Will fade in */
+            font-size: 1.6em;
+            margin: 0 0 10px 0;
+            display: block;
+            opacity: 0;
             transition: opacity 0.5s ease-in-out;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center; /* Center step headings */
+            width: 100%; /* Ensure heading takes full width for centering */
         }
 
         .step-bullet {
-            display: flex; /* Use flexbox for bullet and text alignment */
-            align-items: flex-start; /* Align bullet at the top of the line */
-            margin-bottom: 5px; /* Spacing between bullet points */
-            opacity: 0; /* Will fade in */
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 5px;
+            opacity: 0;
             transition: opacity 0.5s ease-in-out;
+            text-align: left; /* Ensure bullet points align left */
+            width: 100%; /* Ensure it takes full available width */
         }
 
         .step-bullet .icon {
             margin-right: 10px;
             color: #007bff;
             font-size: 1.2em;
+            flex-shrink: 0; /* Prevent icon from shrinking */
         }
 
         .step-bullet .text-content {
             flex-grow: 1;
-            white-space: normal; /* Allow text to wrap naturally */
-            overflow: hidden; /* Hide overflow during typing */
-            border-right: solid 2px transparent; /* Placeholder for cursor space */
+            white-space: normal;
+            overflow: hidden;
+            border-right: solid 2px transparent;
         }
         .text-content.typing .cursor {
             background-color: #333;
             margin-left: 3px;
             width: 2px;
-            height: 1em; /* Adjusted height for better alignment with text lines */
+            height: 1em;
             animation: blink 0.7s infinite;
             vertical-align: text-bottom;
-            display: inline-block; /* Show cursor when typing */
+            display: inline-block;
         }
-         .cursor {
-            display: none; /* Hide cursor by default */
+        .cursor {
+            display: none;
         }
 
 
-        /* Typing Animation Keyframes */
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
 
-        /* Initial fade-in for header */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
+        /* --- PROFESSIONAL START BUTTON STYLING --- */
         .start-button {
             display: inline-block;
             margin-top: 30px;
-            padding: 15px 30px;
-            font-size: 1.5em;
+            padding: 18px 35px;
+            font-size: 1.6em;
+            font-weight: bold;
             cursor: pointer;
             border: none;
-            border-radius: 8px;
-            background-color: #28a745;
+            border-radius: 50px;
+            background: linear-gradient(45deg, #28a745, #4CAF50);
             color: white;
             text-decoration: none;
-            transition: opacity 1s ease-in;
+            box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
+            transition: all 0.3s ease;
             opacity: 0;
             pointer-events: none;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
         .start-button.active {
             opacity: 1;
             pointer-events: auto;
+            animation: bounceIn 0.8s ease-out forwards;
         }
+
+        /* Keyframes for bounce-in animation */
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
         .start-button:hover {
-            background-color: #218838;
-            transform: scale(1.05);
+            background: linear-gradient(45deg, #218838, #45a049);
+            box-shadow: 0 8px 20px rgba(33, 136, 56, 0.6);
+            transform: translateY(-3px) scale(1.02);
         }
+
+        .start-button:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 8px rgba(40, 167, 69, 0.4);
+            background: linear-gradient(45deg, #218838, #3e8e41);
+        }
+        /* --- END PROFESSIONAL START BUTTON STYLING --- */
+
 
         #whatsapp-float {
             position: fixed;
@@ -192,18 +279,95 @@
         footer hr {
             margin-bottom: 10px;
         }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 1.2em;
+            }
+            .nav-button {
+                padding: 6px 10px;
+                font-size: 0.85em;
+            }
+            .nav-links {
+                gap: 10px;
+            }
+            .step-heading {
+                font-size: 1.4em;
+            }
+            .start-button {
+                padding: 15px 30px;
+                font-size: 1.4em;
+            }
+            .container {
+                padding: 25px; /* Slightly less padding on smaller screens */
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 15px;
+            }
+            .nav-links {
+                margin-top: 10px;
+                width: 100%;
+                justify-content: flex-start;
+                gap: 15px;
+            }
+            .logo {
+                font-size: 1.4em;
+            }
+            .nav-link, .nav-button {
+                font-size: 0.9em;
+                padding: 8px 12px;
+            }
+            .container {
+                margin-top: 20px;
+                padding: 20px; /* Reduced padding for mobile */
+                width: 95%; /* Take up more width on very small screens */
+            }
+            #intro-text {
+                max-width: 100%; /* Remove max-width on intro text for smaller screens */
+            }
+            .step-heading {
+                font-size: 1.2em;
+            }
+            .start-button {
+                padding: 12px 25px;
+                font-size: 1.2em;
+                border-radius: 40px;
+                box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+            }
+            .start-button:hover {
+                transform: translateY(-2px) scale(1.01);
+                box-shadow: 0 6px 15px rgba(33, 136, 56, 0.5);
+            }
+            .start-button:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 5px rgba(40, 167, 69, 0.3);
+            }
+        }
     </style>
 </head>
 <body>
 
+    <nav>
+        <a href="index.html" class="logo">Efootball Fixture Generator</a>
+        <div class="nav-links">
+            <a href="HomePage.html" class="nav-button">Get Started</a>
+            <a href="https://wa.me/254758819349?text=Hello%20ProfKhamis%2C%20I%20have%20a%20question%20about%20the%20Efootball%20Fixture%20Generator%20App." target="_blank" class="nav-link">Contact Admin</a>
+        </div>
+    </nav>
+
     <div class="container">
-        <h1>⚽ E-Fixture Generator ⚽</h1>
         <p id="intro-text">Welcome to the ultimate tool for organizing your Efootball leagues and tournaments! Here's how it works:</p>
 
         <div id="explanation-content">
             </div>
 
-        <a href="HomePage.html" class="start-button">Get Started Now!</a>
+        <a href="generator.html" class="start-button">Get Started Now!</a>
     </div>
 
     <a href="https://wa.me/254758819349" target="_blank" id="whatsapp-float" title="Chat on WhatsApp">
@@ -219,7 +383,6 @@
             const explanationContainer = document.getElementById('explanation-content');
             const startButton = document.querySelector('.start-button');
             
-            // Structure: Each step has a heading and an array of bullet points
             const explanationSteps = [
                 {
                     heading: "Step 1: Enter Your Teams",
@@ -251,13 +414,12 @@
             let currentBulletIndex = 0;
             let charIndex = 0;
             let typingInterval;
-            let currentTextElement = null; // Reference to the current text content span
-            let currentCursorElement = null; // Reference to the current cursor
-
-            const typingSpeed = 30; // Milliseconds per character
-            const pauseBetweenBullets = 1000; // Pause after one bullet is typed
-            const pauseAfterStepTyped = 2000; // Pause after entire step is typed
-            const fadeDuration = 800; // Duration for fade in/out effects
+            let currentTextElement = null;
+            
+            const typingSpeed = 30;
+            const pauseBetweenBullets = 1000;
+            const pauseAfterStepTyped = 2000;
+            const fadeDuration = 800;
 
             function typeContent() {
                 const currentBulletText = explanationSteps[stepIndex].bullets[currentBulletIndex];
@@ -267,19 +429,16 @@
                     charIndex++;
                     typingInterval = setTimeout(typeContent, typingSpeed);
                 } else {
-                    // Bullet finished typing
                     clearTimeout(typingInterval);
-                    currentTextElement.classList.remove('typing'); // Remove typing class to hide cursor
+                    currentTextElement.classList.remove('typing');
                     
                     setTimeout(() => {
                         currentBulletIndex++;
-                        charIndex = 0; // Reset char index for next bullet
+                        charIndex = 0;
 
                         if (currentBulletIndex < explanationSteps[stepIndex].bullets.length) {
-                            // Move to next bullet
                             renderBulletAndType();
                         } else {
-                            // Entire step finished typing
                             setTimeout(fadeOutCurrentStep, pauseAfterStepTyped);
                         }
                     }, pauseBetweenBullets);
@@ -288,24 +447,20 @@
 
             function renderStep() {
                 const stepData = explanationSteps[stepIndex];
-                explanationContainer.innerHTML = ''; // Clear previous step content
+                explanationContainer.innerHTML = '';
 
-                // Render heading
                 const headingElement = document.createElement('h2');
                 headingElement.className = 'step-heading';
                 headingElement.textContent = stepData.heading;
                 explanationContainer.appendChild(headingElement);
 
-                // Create container for bullets
                 const bulletsContainer = document.createElement('div');
                 bulletsContainer.className = 'bullets-container';
                 explanationContainer.appendChild(bulletsContainer);
                 
-                // Fade in the heading
                 setTimeout(() => headingElement.style.opacity = '1', 50);
 
-                // Start typing the first bullet after heading appears
-                setTimeout(renderBulletAndType, 500); // Small delay before first bullet
+                setTimeout(renderBulletAndType, 500);
             }
 
             function renderBulletAndType() {
@@ -319,39 +474,36 @@
                 bulletsContainer.appendChild(bulletDiv);
 
                 currentTextElement = bulletDiv.querySelector('.text-content');
-                currentTextElement.classList.add('typing'); // Add typing class to show cursor
+                currentTextElement.classList.add('typing');
 
                 setTimeout(() => {
-                    bulletDiv.style.opacity = '1'; // Fade in the bullet itself
-                    typeContent(); // Start typing the text content
+                    bulletDiv.style.opacity = '1';
+                    typeContent();
                 }, 50);
             }
 
             function fadeOutCurrentStep() {
-                explanationContainer.style.opacity = '0'; // Fade out the entire explanation container
+                explanationContainer.style.opacity = '0';
                 setTimeout(showNextStep, fadeDuration);
             }
 
             function showNextStep() {
                 stepIndex++;
-                currentBulletIndex = 0; // Reset bullet index for the new step
+                currentBulletIndex = 0;
 
                 if (stepIndex < explanationSteps.length) {
-                    explanationContainer.innerHTML = ''; // Clear content for next step
-                    explanationContainer.style.opacity = '1'; // Fade in next step container
-                    renderStep(); // Render and start typing next step
+                    explanationContainer.innerHTML = '';
+                    explanationContainer.style.opacity = '1';
+                    renderStep();
                 } else {
-                    // All steps completed
-                    explanationContainer.style.display = 'none'; // Hide explanation container
-                    startButton.classList.add('active'); // Activate the button
+                    explanationContainer.style.display = 'none';
+                    startButton.classList.add('active');
                 }
             }
 
-            // Initial animation start
-            explanationContainer.style.opacity = 1; // Make container visible
-            renderStep(); // Start rendering and typing the first step
+            explanationContainer.style.opacity = 1;
+            renderStep();
 
-            // Set the current year in the footer
             document.getElementById('year').textContent = new Date().getFullYear();
         });
     </script>
