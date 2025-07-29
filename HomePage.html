@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efootball Fixture Generator - Homepage</title>
+    <meta name="description" content="Generate and manage Efootball fixtures with professional tools for leagues, cups, and tournaments. Simple, fast, and fully mobile optimized.">
+    <meta name="keywords" content="efootball fixtures, football fixture generator, epl fixtures, uefa fixtures, konami football app, pes fixtures, tournament maker">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://konamifixtures.vercel.app/" />
+    <meta name="google-site-verification" content="rHChEQlQkLZgkDgCu1eowiMNZEfXHrXud74J4kjvwak" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3900846271931081" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f2f2f2;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: space-between;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            text-align: left;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        h1 {
+            color: #007bff;
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease-out;
+        }
+        #intro-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        #explanation-content {
+            /* Removed min-height, max-height, overflow-y as we're dynamically managing content lines */
+            border-left: 5px solid #007bff;
+            padding-left: 15px;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+            line-height: 1.6;
+            position: relative;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            min-height: 150px; /* Give some initial space */
+            display: flex; /* Use flexbox to align cursor at the end of typed content */
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .step-heading {
+            color: #0056b3;
+            font-size: 1.8em;
+            margin: 0 0 10px 0; /* Control margin for heading */
+            display: block; /* Ensures heading takes its own line */
+            opacity: 0; /* Will fade in */
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .step-bullet {
+            display: flex; /* Use flexbox for bullet and text alignment */
+            align-items: flex-start; /* Align bullet at the top of the line */
+            margin-bottom: 5px; /* Spacing between bullet points */
+            opacity: 0; /* Will fade in */
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .step-bullet .icon {
+            margin-right: 10px;
+            color: #007bff;
+            font-size: 1.2em;
+        }
+
+        .step-bullet .text-content {
+            flex-grow: 1;
+            white-space: normal; /* Allow text to wrap naturally */
+            overflow: hidden; /* Hide overflow during typing */
+            border-right: solid 2px transparent; /* Placeholder for cursor space */
+        }
+        .text-content.typing .cursor {
+            background-color: #333;
+            margin-left: 3px;
+            width: 2px;
+            height: 1em; /* Adjusted height for better alignment with text lines */
+            animation: blink 0.7s infinite;
+            vertical-align: text-bottom;
+            display: inline-block; /* Show cursor when typing */
+        }
+         .cursor {
+            display: none; /* Hide cursor by default */
+        }
+
+
+        /* Typing Animation Keyframes */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Initial fade-in for header */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .start-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            transition: opacity 1s ease-in;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .start-button.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .start-button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        #whatsapp-float {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        #whatsapp-float img {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        #whatsapp-float img:hover {
+            transform: scale(1.15);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+        footer hr {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>⚽ Efootball Fixture Generator ⚽</h1>
+        <p id="intro-text">Welcome to the ultimate tool for organizing your Efootball leagues and tournaments! Here's how it works:</p>
+
+        <div id="explanation-content">
+            </div>
+
+        <a href="generator.html" class="start-button">Get Started Now!</a>
+    </div>
+
+    <a href="https://wa.me/254758819349" target="_blank" id="whatsapp-float" title="Chat on WhatsApp">
+        <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp" />
+    </a>
+    <footer>
+        <hr>
+        <p>&copy; <span id="year"></span> All rights reserved. Made with ❤️ by ProfKhamis.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const explanationContainer = document.getElementById('explanation-content');
+            const startButton = document.querySelector('.start-button');
+            
+            // Structure: Each step has a heading and an array of bullet points
+            const explanationSteps = [
+                {
+                    heading: "Step 1: Enter Your Teams",
+                    bullets: [
+                        "Simply type or paste your team names into the text area.",
+                        "Make sure each team is on a new line.",
+                        "We'll automatically check for duplicate names!"
+                    ]
+                },
+                {
+                    heading: "Step 2: Generate Fixtures",
+                    bullets: [
+                        "Click the \"Generate Fixtures\" button.",
+                        "Our smart algorithm will create a fair round-robin schedule for both legs.",
+                        "You'll see all your matchdays laid out clearly."
+                    ]
+                },
+                {
+                    heading: "Step 3: Download & Share",
+                    bullets: [
+                        "Select any matchday from the dropdown.",
+                        "Download it as a PDF for easy printing or sharing.",
+                        "Or, share the matchday directly to WhatsApp with one click!"
+                    ]
+                }
+            ];
+
+            let stepIndex = 0;
+            let currentBulletIndex = 0;
+            let charIndex = 0;
+            let typingInterval;
+            let currentTextElement = null; // Reference to the current text content span
+            let currentCursorElement = null; // Reference to the current cursor
+
+            const typingSpeed = 30; // Milliseconds per character
+            const pauseBetweenBullets = 1000; // Pause after one bullet is typed
+            const pauseAfterStepTyped = 2000; // Pause after entire step is typed
+            const fadeDuration = 800; // Duration for fade in/out effects
+
+            function typeContent() {
+                const currentBulletText = explanationSteps[stepIndex].bullets[currentBulletIndex];
+
+                if (charIndex < currentBulletText.length) {
+                    currentTextElement.textContent += currentBulletText.charAt(charIndex);
+                    charIndex++;
+                    typingInterval = setTimeout(typeContent, typingSpeed);
+                } else {
+                    // Bullet finished typing
+                    clearTimeout(typingInterval);
+                    currentTextElement.classList.remove('typing'); // Remove typing class to hide cursor
+                    
+                    setTimeout(() => {
+                        currentBulletIndex++;
+                        charIndex = 0; // Reset char index for next bullet
+
+                        if (currentBulletIndex < explanationSteps[stepIndex].bullets.length) {
+                            // Move to next bullet
+                            renderBulletAndType();
+                        } else {
+                            // Entire step finished typing
+                            setTimeout(fadeOutCurrentStep, pauseAfterStepTyped);
+                        }
+                    }, pauseBetweenBullets);
+                }
+            }
+
+            function renderStep() {
+                const stepData = explanationSteps[stepIndex];
+                explanationContainer.innerHTML = ''; // Clear previous step content
+
+                // Render heading
+                const headingElement = document.createElement('h2');
+                headingElement.className = 'step-heading';
+                headingElement.textContent = stepData.heading;
+                explanationContainer.appendChild(headingElement);
+
+                // Create container for bullets
+                const bulletsContainer = document.createElement('div');
+                bulletsContainer.className = 'bullets-container';
+                explanationContainer.appendChild(bulletsContainer);
+                
+                // Fade in the heading
+                setTimeout(() => headingElement.style.opacity = '1', 50);
+
+                // Start typing the first bullet after heading appears
+                setTimeout(renderBulletAndType, 500); // Small delay before first bullet
+            }
+
+            function renderBulletAndType() {
+                const bulletsContainer = explanationContainer.querySelector('.bullets-container');
+                const bulletDiv = document.createElement('div');
+                bulletDiv.className = 'step-bullet';
+                bulletDiv.innerHTML = `
+                    <span class="icon">⚽</span>
+                    <span class="text-content"></span>
+                `;
+                bulletsContainer.appendChild(bulletDiv);
+
+                currentTextElement = bulletDiv.querySelector('.text-content');
+                currentTextElement.classList.add('typing'); // Add typing class to show cursor
+
+                setTimeout(() => {
+                    bulletDiv.style.opacity = '1'; // Fade in the bullet itself
+                    typeContent(); // Start typing the text content
+                }, 50);
+            }
+
+            function fadeOutCurrentStep() {
+                explanationContainer.style.opacity = '0'; // Fade out the entire explanation container
+                setTimeout(showNextStep, fadeDuration);
+            }
+
+            function showNextStep() {
+                stepIndex++;
+                currentBulletIndex = 0; // Reset bullet index for the new step
+
+                if (stepIndex < explanationSteps.length) {
+                    explanationContainer.innerHTML = ''; // Clear content for next step
+                    explanationContainer.style.opacity = '1'; // Fade in next step container
+                    renderStep(); // Render and start typing next step
+                } else {
+                    // All steps completed
+                    explanationContainer.style.display = 'none'; // Hide explanation container
+                    startButton.classList.add('active'); // Activate the button
+                }
+            }
+
+            // Initial animation start
+            explanationContainer.style.opacity = 1; // Make container visible
+            renderStep(); // Start rendering and typing the first step
+
+            // Set the current year in the footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
