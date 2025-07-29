@@ -1,20 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Efootball Fixture Generator</title>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3900846271931081"
-     crossorigin="anonymous"></script>
-  <meta name="google-site-verification" content="rHChEQlQkLZgkDgCu1eowiMNZEfXHrXud74J4kjvwak" />
-  <title>Konami Fixtures – Efootball Match Generator</title>
-<meta name="description" content="Generate and manage Efootball fixtures with professional tools for leagues, cups, and tournaments. Simple, fast, and fully mobile optimized.">
-<meta name="keywords" content="efootball fixtures, football fixture generator, epl fixtures, uefa fixtures, konami football app, pes fixtures, tournament maker">
-<meta name="robots" content="index, follow">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="canonical" href="https://konamifixtures.vercel.app/" />
-<meta name="description" content="Generate and download Efootball Premier fixtures easily. Create matchdays and download schedules.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://konamifixtures.vercel.app/">
+    <meta charset="UTF-8">
+    <title>Efootball Fixture Generator</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3900846271931081"
+        crossorigin="anonymous"></script>
+    <meta name="google-site-verification" content="rHChEQlQkLZgkDgCu1eowiMNZEfXHrXud74J4kjvwak" />
+    <meta name="description" content="Generate and manage Efootball fixtures with professional tools for leagues, cups, and tournaments. Simple, fast, and fully mobile optimized.">
+    <meta name="keywords" content="efootball fixtures, football fixture generator, epl fixtures, uefa fixtures, konami football app, pes fixtures, tournament maker">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://konamifixtures.vercel.app/" />
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300,400,500,700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -351,17 +347,16 @@
         }
 
         /* --- Loading Effect for Download Button --- */
-        /* Removed old .loading-button pulse-glow animation */
         .loading-button {
             pointer-events: none; /* Disable clicks during loading */
-            opacity: 0.9; /* Slightly dim it */
+            opacity: 0.8; /* Slightly more dimmed for clearer disabled state */
             background-color: var(--primary-color-dark); /* Darken slightly */
             transition: none; /* Disable normal hover/active transitions during loading */
         }
 
-        /* Hide the icon when loading */
+        /* Hide the icon using visibility: hidden to preserve layout space */
         #downloadPdfBtn.loading-button .fas { /* More specific selector */
-            display: none;
+            visibility: hidden; /* Hide the icon but keep its space */
         }
 
         /* Add a spinning circle loader for the download button */
@@ -370,14 +365,13 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 24px; /* Size of the spinner */
-            height: 24px;
-            margin-top: -12px; /* Half height to center */
-            margin-left: -12px; /* Half width to center */
+            width: 28px; /* Slightly larger spinner for better visibility */
+            height: 28px; /* Consistent with width */
             border: 3px solid rgba(255, 255, 255, 0.3); /* Transparent part of the circle */
             border-top-color: #fff; /* The "moving" part of the circle */
             border-radius: 50%; /* Make it a circle */
             animation: spin 0.8s linear infinite; /* Spinning animation */
+            transform: translate(-50%, -50%); /* Ensures perfect centering */
             box-sizing: border-box; /* Ensure border is included in size calculation */
         }
 
@@ -984,8 +978,57 @@
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
+                // Add the captured image of the matchday content
                 pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+                // --- Watermark Logic: Add footer text to the bottom of each page ---
+                const footerElement = document.querySelector('footer p');
+                let footerText = '';
+                if (footerElement) {
+                    // Get the current text content, replace multiple spaces/newlines with single space
+                    footerText = footerElement.textContent.trim().replace(/\s\s+/g, ' ').replace(/\n/g, ' ');
+                }
+
+                if (footerText) {
+                    const totalPages = pdf.internal.getNumberOfPages();
+                    const pageHeight = pdf.internal.pageSize.getHeight();
+                    const pageWidth = pdf.internal.pageSize.getWidth();
+
+                    // Loop through each page to add the watermark
+                    for (let i = 1; i <= totalPages; i++) {
+                        pdf.setPage(i); // Set the current page to add text to
+
+                        // Save the current graphics state to isolate watermark styles
+                        pdf.saveGraphicsState();
+
+                        // Set text opacity for a subtle watermark effect (e.g., 15%)
+                        pdf.setGState(new pdf.GState({ opacity: 0.15 }));
+
+                        // Set text color to a light gray
+                        pdf.setTextColor(180, 180, 180);
+
+                        // Set font and font size for the watermark
+                        pdf.setFont("helvetica", "normal"); // Use a standard font like Helvetica
+                        pdf.setFontSize(9); // Adjust font size as needed
+
+                        // Measure text width to center it horizontally
+                        const textWidth = pdf.getStringUnitWidth(footerText) * pdf.internal.getFontSize() / pdf.internal.scaleFactor;
+                        
+                        // Calculate X and Y positions for bottom center
+                        const textX = (pageWidth - textWidth) / 2;
+                        const textY = pageHeight - 10; // 10 units from the bottom edge
+
+                        // Add the footer text
+                        pdf.text(footerText, textX, textY);
+
+                        // Restore the graphics state so subsequent elements aren't affected
+                        pdf.restoreGraphicsState();
+                    }
+                }
+                // --- End Watermark Logic ---
+
                 pdf.save(`Matchday_${matchday}_Fixtures.pdf`);
+
             } catch (error) {
                 console.error('Error generating or downloading PDF:', error);
                 alert('Failed to generate PDF. Please try again.');
