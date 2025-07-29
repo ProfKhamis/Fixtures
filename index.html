@@ -41,8 +41,8 @@
         }
         h1 {
             color: #007bff;
-            font-size: 3em;
-            margin-bottom: 10px;
+            font-size: 2em;
+            margin-bottom: 6px;
             animation: fadeInDown 1s ease-out;
         }
         #intro-text {
@@ -51,7 +51,7 @@
             margin-bottom: 15px;
         }
         #explanation-content {
-            /* Removed min-height, max-height, overflow-y as we're dynamically managing content lines */
+            
             border-left: 5px solid #007bff;
             padding-left: 15px;
             margin-bottom: 25px;
@@ -60,26 +60,26 @@
             position: relative;
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
-            min-height: 150px; /* Give some initial space */
-            display: flex; /* Use flexbox to align cursor at the end of typed content */
+            min-height: 150px; 
+            display: flex; 
             flex-direction: column;
             justify-content: flex-start;
         }
 
         .step-heading {
             color: #0056b3;
-            font-size: 1.8em;
-            margin: 0 0 10px 0; /* Control margin for heading */
-            display: block; /* Ensures heading takes its own line */
-            opacity: 0; /* Will fade in */
+            font-size: 1.6em;
+            margin: 0 0 10px 0; 
+            display: block; 
+            opacity: 0; 
             transition: opacity 0.5s ease-in-out;
         }
 
         .step-bullet {
-            display: flex; /* Use flexbox for bullet and text alignment */
-            align-items: flex-start; /* Align bullet at the top of the line */
-            margin-bottom: 5px; /* Spacing between bullet points */
-            opacity: 0; /* Will fade in */
+            display: flex; 
+            align-items: flex-start; 
+            margin-bottom: 4px; 
+            opacity: 0; 
             transition: opacity 0.5s ease-in-out;
         }
 
@@ -91,31 +91,27 @@
 
         .step-bullet .text-content {
             flex-grow: 1;
-            white-space: normal; /* Allow text to wrap naturally */
-            overflow: hidden; /* Hide overflow during typing */
-            border-right: solid 2px transparent; /* Placeholder for cursor space */
+            white-space: normal; 
+            overflow: hidden; 
+            border-right: solid 2px transparent; 
         }
         .text-content.typing .cursor {
             background-color: #333;
             margin-left: 3px;
             width: 2px;
-            height: 1em; /* Adjusted height for better alignment with text lines */
+            height: 1em; 
             animation: blink 0.7s infinite;
             vertical-align: text-bottom;
-            display: inline-block; /* Show cursor when typing */
+            display: inline-block; 
         }
          .cursor {
-            display: none; /* Hide cursor by default */
-        }
-
-
-        /* Typing Animation Keyframes */
+            display: none;
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
 
-        /* Initial fade-in for header */
+        
         @keyframes fadeInDown {
             from {
                 opacity: 0;
@@ -176,6 +172,7 @@
             color: #666;
             padding: 20px 0;
             margin-top: auto;
+          position: fixed;
         }
         footer hr {
             margin-bottom: 10px;
@@ -212,7 +209,7 @@
                 {
                     heading: "Step 1: Enter Your Teams",
                     bullets: [
-                        "Simply type or paste your team names into the text area.",
+                        "Simply type or paste your team names into the box shown.",
                         "Make sure each team is on a new line.",
                         "We'll automatically check for duplicate names!"
                     ]
@@ -239,13 +236,13 @@
             let currentBulletIndex = 0;
             let charIndex = 0;
             let typingInterval;
-            let currentTextElement = null; // Reference to the current text content span
-            let currentCursorElement = null; // Reference to the current cursor
+            let currentTextElement = null; 
+            let currentCursorElement = null; 
 
-            const typingSpeed = 30; // Milliseconds per character
-            const pauseBetweenBullets = 1000; // Pause after one bullet is typed
-            const pauseAfterStepTyped = 2000; // Pause after entire step is typed
-            const fadeDuration = 800; // Duration for fade in/out effects
+            const typingSpeed = 30;
+            const pauseBetweenBullets = 1000; 
+            const pauseAfterStepTyped = 2000;
+            const fadeDuration = 800;
 
             function typeContent() {
                 const currentBulletText = explanationSteps[stepIndex].bullets[currentBulletIndex];
@@ -257,17 +254,17 @@
                 } else {
                     // Bullet finished typing
                     clearTimeout(typingInterval);
-                    currentTextElement.classList.remove('typing'); // Remove typing class to hide cursor
+                    currentTextElement.classList.remove('typing');
                     
                     setTimeout(() => {
                         currentBulletIndex++;
-                        charIndex = 0; // Reset char index for next bullet
+                        charIndex = 0; 
 
                         if (currentBulletIndex < explanationSteps[stepIndex].bullets.length) {
-                            // Move to next bullet
+                            
                             renderBulletAndType();
                         } else {
-                            // Entire step finished typing
+                            
                             setTimeout(fadeOutCurrentStep, pauseAfterStepTyped);
                         }
                     }, pauseBetweenBullets);
@@ -276,24 +273,24 @@
 
             function renderStep() {
                 const stepData = explanationSteps[stepIndex];
-                explanationContainer.innerHTML = ''; // Clear previous step content
+                explanationContainer.innerHTML = ''; 
 
-                // Render heading
+              
                 const headingElement = document.createElement('h2');
                 headingElement.className = 'step-heading';
                 headingElement.textContent = stepData.heading;
                 explanationContainer.appendChild(headingElement);
 
-                // Create container for bullets
+                
                 const bulletsContainer = document.createElement('div');
                 bulletsContainer.className = 'bullets-container';
                 explanationContainer.appendChild(bulletsContainer);
                 
-                // Fade in the heading
+                
                 setTimeout(() => headingElement.style.opacity = '1', 50);
 
-                // Start typing the first bullet after heading appears
-                setTimeout(renderBulletAndType, 500); // Small delay before first bullet
+                
+                setTimeout(renderBulletAndType, 500); 
             }
 
             function renderBulletAndType() {
@@ -307,39 +304,39 @@
                 bulletsContainer.appendChild(bulletDiv);
 
                 currentTextElement = bulletDiv.querySelector('.text-content');
-                currentTextElement.classList.add('typing'); // Add typing class to show cursor
+                currentTextElement.classList.add('typing'); 
 
                 setTimeout(() => {
-                    bulletDiv.style.opacity = '1'; // Fade in the bullet itself
-                    typeContent(); // Start typing the text content
+                    bulletDiv.style.opacity = '1'; 
+                    typeContent(); 
                 }, 50);
             }
 
             function fadeOutCurrentStep() {
-                explanationContainer.style.opacity = '0'; // Fade out the entire explanation container
+                explanationContainer.style.opacity = '0'; 
                 setTimeout(showNextStep, fadeDuration);
             }
 
             function showNextStep() {
                 stepIndex++;
-                currentBulletIndex = 0; // Reset bullet index for the new step
+                currentBulletIndex = 0; 
 
                 if (stepIndex < explanationSteps.length) {
-                    explanationContainer.innerHTML = ''; // Clear content for next step
-                    explanationContainer.style.opacity = '1'; // Fade in next step container
-                    renderStep(); // Render and start typing next step
+                    explanationContainer.innerHTML = ''; 
+                    explanationContainer.style.opacity = '1';
+                    renderStep(); 
                 } else {
-                    // All steps completed
-                    explanationContainer.style.display = 'none'; // Hide explanation container
-                    startButton.classList.add('active'); // Activate the button
+                  
+                    explanationContainer.style.display = 'none'; 
+                    startButton.classList.add('active'); 
                 }
             }
 
-            // Initial animation start
-            explanationContainer.style.opacity = 1; // Make container visible
-            renderStep(); // Start rendering and typing the first step
+            
+            explanationContainer.style.opacity = 1; 
+            renderStep(); 
 
-            // Set the current year in the footer
+            
             document.getElementById('year').textContent = new Date().getFullYear();
         });
     </script>
