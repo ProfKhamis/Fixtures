@@ -84,24 +84,60 @@
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
-        #whatsapp-float {
-            position: fixed;
-            bottom: 80px; /* lifted up from the bottom */
-            right: 20px;
-            z-index: 1000;
-        }
+    #whatsapp-float {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index: 1000;
+    display: flex; /* Makes the icon and text align nicely */
+    align-items: center; /* Vertically center them */
+    background-color: rgba(255, 255, 255, 0.9); /* Add a slight background for the label */
+    padding: 8px 12px;
+    border-radius: 30px; /* Make it pill-shaped */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    text-decoration: none; /* Remove underline from the link */
+    color: #333; /* Default text color */
+}
 
-        #whatsapp-float img {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
-        }
+#whatsapp-float:hover {
+    transform: scale(1.05); /* Apply hover to the whole container */
+}
 
-        #whatsapp-float img:hover {
-            transform: scale(1.15);
-        }
+#whatsapp-float img {
+    width: 45px; /* Slightly smaller to accommodate text */
+    height: 45px;
+    border-radius: 50%;
+    margin-right: 10px; /* Space between icon and text */
+    box-shadow: none; /* Remove shadow from image if applied to container */
+    transition: none; /* Remove transform from image if applied to container */
+}
+
+.whatsapp-label {
+    font-size: 1.1em;
+    font-weight: bold;
+    white-space: nowrap; /* Prevent text from wrapping */
+    opacity: 1; /* Ensure label is visible */
+    transition: opacity 0.3s ease;
+    color: #007bff; /* Or another suitable color */
+}
+
+/* Optional: Hide label on very small screens if space is an issue */
+@media (max-width: 600px) {
+    .whatsapp-label {
+        display: none;
+    }
+    #whatsapp-float {
+        padding: 0; /* Adjust padding if label is hidden */
+        background: transparent; /* Remove background if only icon */
+        box-shadow: none; /* Remove shadow if only icon */
+    }
+    #whatsapp-float img {
+        width: 55px; /* Revert to original size */
+        height: 55px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Re-add shadow to icon */
+        margin-right: 0;
+    }
+}
     </style>
 </head>
 <body>
