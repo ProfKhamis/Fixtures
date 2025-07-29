@@ -26,11 +26,11 @@
             width: 100%;
             height: 200px;
             font-size: 14px;
-            margin-bottom: 10px; /* Added some space below textarea */
+            margin-bottom: 10px; 
         }
         button, select {
             margin-top: 10px;
-            padding: 10px 15px; /* Adjusted padding for better button appearance */
+            padding: 10px 15px; 
             font-size: 16px;
             cursor: pointer;
             border: none;
@@ -42,7 +42,7 @@
         button:hover, select:hover{
             background-color: #0056b3;
         }
-        button + button { /* Add space between buttons */
+        button + button { 
             margin-left: 10px;
         }
         select {
@@ -68,19 +68,19 @@
             margin-bottom: 20px;
         }
         th, td {
-            padding: 10px 12px; /* Adjusted padding for better cell spacing */
-            border: 1px solid #ddd; /* Lighter border for tables */
+            padding: 10px 12px; 
+            border: 1px solid #ddd; 
             text-align: center;
         }
         th {
-            background-color: #e9ecef; /* Slightly darker background for headers */
+            background-color: #e9ecef; 
             font-weight: bold;
         }
         .section-header {
             margin-top: 40px;
-            font-size: 28px; /* Slightly larger for prominence */
-            color: #0056b3; /* A bit more vibrant color */
-            border-bottom: 2px solid #007bff; /* Underline for section headers */
+            font-size: 28px; 
+            color: #0056b3; 
+            border-bottom: 2px solid #007bff; 
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
@@ -89,52 +89,52 @@
     bottom: 80px;
     right: 20px;
     z-index: 1000;
-    display: flex; /* Makes the icon and text align nicely */
-    align-items: center; /* Vertically center them */
-    background-color: rgba(255, 255, 255, 0.9); /* Add a slight background for the label */
+    display: flex; 
+    align-items: center; 
+    background-color: rgba(255, 255, 255, 0.9); 
     padding: 8px 12px;
-    border-radius: 30px; /* Make it pill-shaped */
+    border-radius: 30px; 
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    text-decoration: none; /* Remove underline from the link */
-    color: #333; /* Default text color */
+    text-decoration: none; 
+    color: #333; 
 }
 
 #whatsapp-float:hover {
-    transform: scale(1.05); /* Apply hover to the whole container */
+    transform: scale(1.05); 
 }
 
 #whatsapp-float img {
-    width: 45px; /* Slightly smaller to accommodate text */
+    width: 45px; 
     height: 45px;
     border-radius: 50%;
-    margin-right: 10px; /* Space between icon and text */
-    box-shadow: none; /* Remove shadow from image if applied to container */
-    transition: none; /* Remove transform from image if applied to container */
+    margin-right: 10px; 
+    box-shadow: none; 
+    transition: none; 
 }
 
 .whatsapp-label {
     font-size: 1.1em;
     font-weight: bold;
-    white-space: nowrap; /* Prevent text from wrapping */
-    opacity: 1; /* Ensure label is visible */
+    white-space: nowrap; 
+    opacity: 1; 
     transition: opacity 0.3s ease;
-    color: #007bff; /* Or another suitable color */
+    color: #007bff; 
 }
 
-/* Optional: Hide label on very small screens if space is an issue */
+
 @media (max-width: 600px) {
     .whatsapp-label {
         display: none;
     }
     #whatsapp-float {
-        padding: 0; /* Adjust padding if label is hidden */
-        background: transparent; /* Remove background if only icon */
-        box-shadow: none; /* Remove shadow if only icon */
+        padding: 0; 
+        background: transparent; 
+        box-shadow: none; 
     }
     #whatsapp-float img {
-        width: 55px; /* Revert to original size */
+        width: 55px; 
         height: 55px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Re-add shadow to icon */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
         margin-right: 0;
     }
 }
@@ -188,23 +188,23 @@
             outputDiv.innerHTML = '';
             matchdaySelector.innerHTML = '<option value="">Select Matchday to Download as PDF</option>';
             matchdayMap = {};
-            fixturesText = ''; // Clear previous fixtures
+            fixturesText = ''; 
 
-            // Save teams to local storage
+            
             localStorage.setItem('savedTeams', JSON.stringify(teams));
 
-            // Round-robin algorithm implementation
+            
             const roundRobin = (teams) => {
                 const n = teams.length;
                 const results = [];
-                let teamList = [...teams]; // Create a mutable copy
+                let teamList = [...teams]; 
 
-                // Add a 'BYE' team if the number of teams is odd
+                
                 if (n % 2 !== 0) {
                     teamList.push('BYE');
                 }
 
-                // Loop for n-1 rounds (each team plays n-1 opponents)
+                
                 for (let round = 0; round < teamList.length - 1; round++) {
                     const roundMatches = [];
                     // Pair teams: first with last, second with second-to-last, etc.
@@ -217,13 +217,13 @@
                             roundMatches.push([home, away]);
                         }
                     }
-                    results.push(roundMatches); // Store matches for the current round
+                    results.push(roundMatches); 
 
-                    // Rotate teams for the next round (fixed first team)
+                    // Rotate teams for the next round 
                     const fixed = teamList[0];
-                    const rotated = teamList.slice(1); // Get all teams except the first
-                    rotated.unshift(rotated.pop()); // Move the last team to the second position
-                    teamList = [fixed, ...rotated]; // Reconstruct the team list
+                    const rotated = teamList.slice(1); 
+                    rotated.unshift(rotated.pop()); 
+                    teamList = [fixed, ...rotated]; 
                 }
                 return results;
             };
@@ -275,7 +275,7 @@
                 fixturesText += `--- Second Leg - Matchday ${matchday} ---\n`;
                 fixturesText += round.map(m => `${m[0]} vs ${m[1]}`).join('\n') + '\n\n';
 
-                // Create HTML elements for display
+                
                 const matchdayDiv = document.createElement('div');
                 matchdayDiv.className = 'matchday';
                 matchdayDiv.innerHTML = `<h3>Matchday ${matchday} Fixtures</h3>
