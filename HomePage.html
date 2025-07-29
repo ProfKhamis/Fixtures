@@ -1,343 +1,1037 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Efootball Fixture Generator</title>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3900846271931081"
-     crossorigin="anonymous"></script>
-  <meta name="google-site-verification" content="rHChEQlQkLZgkDgCu1eowiMNZEfXHrXud74J4kjvwak" />
-  <title>Konami Fixtures – Efootball Match Generator</title>
-<meta name="description" content="Generate and manage Efootball fixtures with professional tools for leagues, cups, and tournaments. Simple, fast, and fully mobile optimized.">
-<meta name="keywords" content="efootball fixtures, football fixture generator, epl fixtures, uefa fixtures, konami football app, pes fixtures, tournament maker">
-<meta name="robots" content="index, follow">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="canonical" href="https://konamifixtures.vercel.app/" />
-<meta name="description" content="Generate and download Efootball Premier fixtures easily. Create matchdays and download schedules.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://konamifixtures.vercel.app/">
+    <meta charset="UTF-8">
+    <title>Efootball Fixture Generator</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3900846271931081"
+        crossorigin="anonymous"></script>
+    <meta name="google-site-verification" content="rHChEQlQkLZgkDgCu1eowiMNZEfXHrXud74J4kjvwak" />
+    <meta name="description" content="Generate and manage Efootball fixtures with professional tools for leagues, cups, and tournaments. Simple, fast, and fully mobile optimized.">
+    <meta name="keywords" content="efootball fixtures, football fixture generator, epl fixtures, uefa fixtures, konami football app, pes fixtures, tournament maker">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://konamifixtures.vercel.app/" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300,400,500,700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 
     <style>
+        /* --- Material Design Inspired Color & Spacing Variables --- */
+        :root {
+            --primary-color: #1a73e8; /* Google Blue */
+            --primary-color-dark: #1764cc; /* Darker Google Blue */
+            --accent-color: #4285f4; /* Lighter Blue for highlights */
+            --text-color-dark: #202124; /* Dark gray for primary text */
+            --text-color-light: #5f6368; /* Lighter gray for secondary text */
+            --bg-color-light: #f8f9fa; /* Off-white background */
+            --surface-color: #ffffff; /* White for cards and elevated elements */
+            --border-color: #dadce0; /* Light border color */
+
+            /* Spacing scale (multiples of 8px, typical for Material Design) */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+
+            /* Material Design Shadows (elevation) */
+            --shadow-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --shadow-2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+            --shadow-3: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+            --shadow-inset: inset 0 1px 3px rgba(0,0,0,0.12), inset 0 1px 2px rgba(0,0,0,0.24);
+
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 24px; /* For full pills */
+        }
+
+        /* --- Global Styles --- */
         body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background: #f2f2f2;
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg-color-light);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: var(--text-color-dark);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        textarea {
+
+        /* --- Navigation Bar Styling --- */
+        nav {
+            background-color: var(--surface-color);
+            padding: var(--spacing-md) var(--spacing-lg);
+            box-shadow: var(--shadow-1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
-            height: 200px;
-            font-size: 14px;
-            margin-bottom: 10px; 
+            box-sizing: border-box;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        button, select {
-            margin-top: 10px;
-            padding: 10px 15px; 
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.6em;
+            color: var(--primary-color);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.2s ease;
+        }
+
+        .logo:hover {
+            color: var(--primary-color-dark);
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm); /* Consistent smaller gap */
+        }
+        
+        /* --- Toggle Switch Styles (Material Inspired) --- */
+        .leg-toggle-container {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-weight: 500; /* Roboto Medium */
+            color: var(--text-color-light);
+            white-space: nowrap;
+            margin-right: var(--spacing-md);
+            user-select: none; /* Prevent text selection */
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px; /* Slightly smaller */
+            height: 24px; /* Slightly smaller */
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #bdbdbd; /* Gray when off */
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; /* Smaller thumb */
+            width: 18px; /* Smaller thumb */
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--surface-color);
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: var(--shadow-1); /* Thumb shadow */
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 0 4px rgba(var(--primary-color), 0.2); /* Focus ring */
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px); /* Adjusted for new width */
+        }
+
+        /* --- Main Container & Form Elements --- */
+        .container {
+            max-width: 900px;
+            margin: var(--spacing-xl) auto;
+            padding: var(--spacing-xl);
+            background: var(--surface-color);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-2); /* Elevated card */
+            flex-grow: 1;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--text-color-dark);
+            margin-top: 0;
+            margin-bottom: var(--spacing-lg);
+            font-size: 2.2em;
+            font-weight: 500; /* Roboto Medium */
+        }
+        
+        p {
+            margin-bottom: var(--spacing-md);
+            font-size: 1.05em;
+            color: var(--text-color-light);
+            line-height: 1.5;
+        }
+
+        textarea {
+            width: calc(100% - 2 * var(--spacing-md)); /* Accounting for padding */
+            max-width: 600px;
+            height: 200px;
             font-size: 16px;
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color); /* Outlined style */
+            border-radius: var(--border-radius-sm);
+            box-sizing: border-box;
+            resize: vertical; /* Allow vertical resize */
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-color-dark);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(var(--primary-color), 0.2); /* Focus ring */
+        }
+
+        /* --- Buttons (Material Elevated Style) --- */
+        button, select {
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: 1em;
+            font-weight: 500;
             cursor: pointer;
             border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            transition: background-color 0.3s ease;
+            border-radius: var(--border-radius-sm);
+            background-color: var(--primary-color);
+            color: #ffffff; /* Explicit white for buttons */
+            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: var(--shadow-1);
+            white-space: nowrap;
         }
-        button:hover, select:hover{
-            background-color: #0056b3;
+        button:hover {
+            background-color: var(--primary-color-dark);
+            box-shadow: var(--shadow-2); /* More elevated on hover */
+            transform: translateY(-1px);
         }
-        button + button { 
-            margin-left: 10px;
+        button:active {
+            background-color: var(--primary-color-dark); /* Even darker on active */
+            box-shadow: var(--shadow-1); /* Less elevated on active */
+            transform: translateY(0);
         }
+
+        button.green-btn { /* Example if needed, not directly used now */
+            background-color: #4CAF50;
+        }
+        button.green-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Icon Buttons in Nav Bar - More compact */
+        .nav-controls .icon-button {
+            padding: var(--spacing-sm) var(--spacing-sm); /* Evenly padded */
+            font-size: 1.2em;
+            min-width: 40px; /* Ensure minimum touch target size */
+            min-height: 40px;
+            display: flex; /* Use flex to center icon */
+            justify-content: center;
+            align-items: center;
+        }
+        .nav-controls .icon-button i {
+            margin: 0;
+        }
+        
+        /* --- Dropdown (Select Matchday) - Material Outlined Style --- */
         select {
-            margin-right: 10px;
-            background-color: white;
-            color: #333;
-            border: 1px solid #007bff;
+            -webkit-appearance: none; /* Remove default arrow */
+            -moz-appearance: none;
+            appearance: none;
+            background-color: var(--surface-color);
+            color: var(--text-color-dark);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            padding-right: var(--spacing-xl); /* Space for custom arrow */
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23202124" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Custom arrow */
+            background-repeat: no-repeat;
+            background-position: right var(--spacing-sm) center;
+            background-size: 20px; /* Size of the custom arrow */
+            box-shadow: none; /* Remove button shadow */
         }
+        select:hover {
+            border-color: var(--primary-color);
+        }
+        select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(var(--primary-color), 0.2);
+        }
+
         .matchday {
-            margin-top: 30px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            background: var(--surface-color);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-1); /* Subtle elevation */
+            text-align: left;
         }
         h3 {
-            margin-bottom: 10px;
-            color: #333;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-color-dark);
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 500;
+        }
+        /* NEW: Responsive table container */
+        .table-responsive {
+            overflow-x: auto; /* Allows horizontal scrolling */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            margin-bottom: var(--spacing-md);
         }
         table {
             width: 100%;
+            min-width: 300px; /* Ensures table doesn't shrink too much before scrolling */
             border-collapse: collapse;
-            margin-bottom: 20px;
+            /* margin-bottom: var(--spacing-md); - Moved to .table-responsive */
         }
         th, td {
-            padding: 10px 12px; 
-            border: 1px solid #ddd; 
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-color);
             text-align: center;
+            font-size: 0.95em;
+            color: var(--text-color-light);
         }
         th {
-            background-color: #e9ecef; 
-            font-weight: bold;
+            background-color: var(--bg-color-light);
+            font-weight: 500;
+            color: var(--text-color-dark);
         }
+        tr:nth-child(even) {
+            background-color: #f0f0f0; /* Subtle stripe for readability */
+        }
+
         .section-header {
-            margin-top: 40px;
-            font-size: 28px; 
-            color: #0056b3; 
-            border-bottom: 2px solid #007bff; 
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            margin-top: var(--spacing-xl);
+            font-size: 2em;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+            font-weight: 700; /* Roboto Bold */
         }
-    #whatsapp-float {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    z-index: 1000;
-    display: flex; 
-    align-items: center; 
-    background-color: rgba(255, 255, 255, 0.9); 
-    padding: 8px 12px;
-    border-radius: 30px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    text-decoration: none; 
-    color: #333; 
-}
+        .controls-panel { /* For Generate & Clear buttons */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-md);
+            background-color: var(--bg-color-light);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-inset); /* Subtle inset shadow for a different look */
+        }
 
-#whatsapp-float:hover {
-    transform: scale(1.05); 
-}
+        /* --- Loading Effect for Download Button --- */
+        .loading-button {
+            position: relative;
+            overflow: hidden;
+            pointer-events: none; /* Disable clicks during loading */
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
 
-#whatsapp-float img {
-    width: 45px; 
-    height: 45px;
-    border-radius: 50%;
-    margin-right: 10px; 
-    box-shadow: none; 
-    transition: none; 
-}
+        .loading-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: var(--border-radius-sm);
+            box-shadow: 0 0 10px 5px var(--accent-color), 0 0 20px 10px rgba(66, 133, 244, 0.5); /* Glowing effect using accent color */
+            animation: pulse-glow 1.5s infinite ease-in-out alternate;
+        }
 
-.whatsapp-label {
-    font-size: 1.1em;
-    font-weight: bold;
-    white-space: nowrap; 
-    opacity: 1; 
-    transition: opacity 0.3s ease;
-    color: #007bff; 
-}
+        @keyframes pulse-glow {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+        }
 
+        /* --- WhatsApp Float Button --- */
+        #whatsapp-float {
+            position: fixed;
+            bottom: 90px; /* Pushed higher to clear footer */
+            right: var(--spacing-xl);
+            z-index: 999; /* Below sticky nav */
+            display: flex;
+            align-items: center;
+            background-color: var(--surface-color);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-lg); /* Pill shape */
+            box-shadow: var(--shadow-2); /* Elevated shadow */
+            text-decoration: none;
+            color: var(--text-color-dark);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-@media (max-width: 600px) {
-    .whatsapp-label {
-        display: none;
-    }
-    #whatsapp-float {
-        padding: 0; 
-        background: transparent; 
-        box-shadow: none; 
-    }
-    #whatsapp-float img {
-        width: 55px; 
-        height: 55px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
-        margin-right: 0;
-    }
-}
+        #whatsapp-float:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: var(--shadow-3); /* More elevated on hover */
+        }
+
+        #whatsapp-float img {
+            width: 38px; /* Slightly smaller icon */
+            height: 38px;
+            border-radius: 50%;
+            margin-right: var(--spacing-sm);
+            box-shadow: none;
+            transition: none;
+        }
+
+        .whatsapp-label {
+            font-size: 1em;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            color: var(--primary-color);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9em;
+            color: var(--text-color-light);
+            padding: var(--spacing-lg) 0;
+            margin-top: auto;
+            background-color: var(--surface-color);
+            box-shadow: inset 0 1px 0 rgba(0,0,0,0.05); /* Subtle top border */
+        }
+        footer hr {
+            display: none; /* Replaced by box-shadow on footer */
+        }
+
+        /* --- New: Guidance Message Styles --- */
+        .guidance-message {
+            background-color: var(--accent-color);
+            color: #ffffff; /* Explicit white for guidance message */
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.9em;
+            font-weight: 500;
+            text-align: center;
+            margin-top: var(--spacing-md); /* Space below form elements */
+            margin-bottom: var(--spacing-md); /* Space above fixtures */
+            opacity: 0; /* Start hidden */
+            transition: opacity 0.8s ease-in-out; /* Fade in animation */
+            display: none; /* Hidden by default, changed to block/flex by JS */
+            box-shadow: var(--shadow-1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .guidance-message.show {
+            opacity: 1;
+            display: block; /* Or flex, depending on content */
+        }
+
+        /* Adjust icon size within the guidance message if needed */
+        .guidance-message .fas, .guidance-message .fab {
+            margin: 0 4px; /* Small margin around icons for spacing */
+            font-size: 1em; /* Ensure consistent size with text */
+            vertical-align: middle; /* Align with text baseline */
+        }
+
+        /* --- Responsive Adjustments (Mobile-first principles) --- */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: var(--spacing-md);
+            }
+            .nav-controls {
+                margin-top: var(--spacing-md);
+                width: 100%;
+                justify-content: center; /* Center controls when stacked */
+                gap: var(--spacing-sm);
+            }
+            .nav-controls > button, .nav-controls > select {
+                width: auto;
+                flex-grow: 1; /* Allow them to grow and fill space */
+                padding: var(--spacing-sm) var(--spacing-md); /* Consistent padding */
+                font-size: 0.95em;
+            }
+            .nav-controls .icon-button {
+                padding: var(--spacing-sm); /* Even smaller padding for icons on mobile */
+                min-width: 36px;
+                min-height: 36px;
+            }
+            .leg-toggle-container {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: var(--spacing-md);
+                margin-right: 0;
+                font-size: 0.9em;
+            }
+            .container {
+                padding: var(--spacing-lg);
+                margin: var(--spacing-md);
+            }
+            h2 {
+                font-size: 2em;
+            }
+            p {
+                font-size: 1em;
+            }
+            textarea {
+                width: 100%;
+                height: 150px;
+                font-size: 15px;
+            }
+            .controls-panel button {
+                width: 100%; /* Make buttons full width in panel on small screens */
+            }
+            .section-header {
+                font-size: 1.8em;
+            }
+            th, td {
+                padding: var(--spacing-xs) var(--spacing-sm);
+                font-size: 0.85em;
+            }
+            /* Adjusted for mobile */
+            #whatsapp-float {
+                bottom: 70px; /* Further adjusted for typical mobile footer height */
+                right: var(--spacing-md); /* Adjust right spacing */
+            }
+            .guidance-message {
+                font-size: 0.85em;
+                margin-top: var(--spacing-sm);
+                margin-bottom: var(--spacing-sm);
+            }
+        }
+
+        @media (max-width: 480px) { /* Even smaller screens */
+            .logo {
+                font-size: 1.4em;
+            }
+            nav {
+                padding: var(--spacing-sm);
+            }
+            .nav-controls {
+                gap: var(--spacing-xs);
+            }
+            .nav-controls button, .nav-controls select {
+                padding: var(--spacing-xs) var(--spacing-sm);
+                font-size: 0.9em;
+            }
+            .nav-controls .icon-button {
+                padding: var(--spacing-xs);
+                min-width: 32px;
+                min-height: 32px;
+                font-size: 1em;
+            }
+            .leg-toggle-container {
+                gap: var(--spacing-xs);
+                font-size: 0.85em;
+            }
+            .container {
+                padding: var(--spacing-md);
+                margin: var(--spacing-sm);
+            }
+            h2 {
+                font-size: 1.6em;
+            }
+            p {
+                font-size: 0.95em;
+            }
+            textarea {
+                font-size: 14px;
+            }
+            #whatsapp-float {
+                bottom: 60px; /* Smallest screens */
+                right: var(--spacing-sm);
+                padding: 6px 10px;
+            }
+            #whatsapp-float img {
+                width: 32px;
+                height: 32px;
+                margin-right: var(--spacing-xs);
+            }
+            .whatsapp-label {
+                font-size: 0.9em;
+            }
+        }
+
+        /* NEW: Specific adjustments for shorter landscape screens (e.g., phones and small tablets in landscape) */
+        @media (max-height: 500px) and (orientation: landscape) {
+            :root {
+                --spacing-xs: 2px;
+                --spacing-sm: 6px;
+                --spacing-md: 10px;
+                --spacing-lg: 16px;
+                --spacing-xl: 20px;
+            }
+            body {
+                font-size: 0.9em; /* Slightly reduce base font size */
+            }
+            nav {
+                padding: var(--spacing-sm) var(--spacing-md);
+            }
+            .logo {
+                font-size: 1.3em;
+            }
+            .leg-toggle-container {
+                font-size: 0.8em;
+                margin-right: var(--spacing-sm);
+            }
+            .switch {
+                width: 40px;
+                height: 20px;
+            }
+            .slider:before {
+                height: 16px;
+                width: 16px;
+                left: 2px;
+                bottom: 2px;
+            }
+            input:checked + .slider:before {
+                transform: translateX(20px);
+            }
+            .nav-controls {
+                gap: var(--spacing-xs); /* Even tighter gap */
+                margin-top: var(--spacing-sm);
+            }
+            .nav-controls > button, .nav-controls > select {
+                padding: var(--spacing-xs) var(--spacing-sm);
+                font-size: 0.85em;
+            }
+            .nav-controls .icon-button {
+                min-width: 30px;
+                min-height: 30px;
+                font-size: 0.9em;
+            }
+
+            .container {
+                padding: var(--spacing-md);
+                margin: var(--spacing-md) auto;
+            }
+            h2 {
+                font-size: 1.7em;
+                margin-bottom: var(--spacing-md);
+            }
+            p {
+                font-size: 0.9em;
+                margin-bottom: var(--spacing-sm);
+            }
+            textarea {
+                height: 80px; /* Very short for landscape */
+                max-height: 100px;
+                padding: var(--spacing-sm);
+                font-size: 14px;
+            }
+            .controls-panel {
+                gap: var(--spacing-sm);
+                padding: var(--spacing-sm);
+                margin-bottom: var(--spacing-md);
+            }
+            .controls-panel button {
+                padding: var(--spacing-xs) var(--spacing-sm);
+                font-size: 0.9em;
+            }
+            .guidance-message {
+                font-size: 0.75em; /* Smallest font for guidance */
+                padding: var(--spacing-xs);
+                margin-top: var(--spacing-sm);
+                margin-bottom: var(--spacing-sm);
+            }
+            .matchday {
+                margin-top: var(--spacing-lg);
+                padding: var(--spacing-md);
+            }
+            h3 {
+                font-size: 1.3em;
+                margin-bottom: var(--spacing-sm);
+            }
+            th, td {
+                padding: var(--spacing-xs);
+                font-size: 0.8em;
+            }
+            .section-header {
+                font-size: 1.5em;
+                margin-bottom: var(--spacing-md);
+            }
+            #whatsapp-float {
+                bottom: 10px; /* Very close to bottom */
+                right: var(--spacing-sm);
+                padding: 4px 8px;
+            }
+            #whatsapp-float img {
+                width: 28px;
+                height: 28px;
+                margin-right: var(--spacing-xs);
+            }
+            .whatsapp-label {
+                font-size: 0.8em;
+            }
+            footer {
+                padding: var(--spacing-md) 0;
+                font-size: 0.8em;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <h2>Efootball Fixture Generator</h2>
-    <p>Enter your team names (one per line):</p>
-    <textarea id="teamInput" placeholder="Enter teams here"></textarea>
-    <br>
-    <button onclick="generateFixtures()">Generate Fixtures</button>
-    <br><br>
-    <select id="matchdaySelector">
-        <option value="">Select Matchday to Download as PDF</option>
-    </select>
-    <button onclick="downloadSelectedMatchday()">Download PDF</button>
-    <button onclick="shareSelectedMatchday()">Share on WhatsApp</button>
+    <nav>
+        <a href="index.html" class="logo">Efootball Fixture Generator</a>
+        <div class="nav-controls">
+            <div class="leg-toggle-container">
+                1-Leg
+                <label class="switch">
+                    <input type="checkbox" id="legToggle">
+                    <span class="slider round"></span>
+                </label>
+                2-Leg
+            </div>
+            
+            <select id="matchdaySelector">
+                <option value="">Select Matchday</option>
+            </select>
+            <button id="downloadPdfBtn" onclick="downloadSelectedMatchday()" class="icon-button" title="Download Matchday as PDF" aria-label="Download Matchday as PDF">
+                <i class="fas fa-file-pdf"></i>
+            </button>
+            <button onclick="shareSelectedMatchday()" class="icon-button" title="Share Matchday on WhatsApp" aria-label="Share Matchday on WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </button>
+        </div>
+    </nav>
 
-    <div id="output"></div>
+    <div class="container">
+        <h2>Generate Your Efootball Fixtures</h2>
+        <p>Enter your team names (one per line):</p>
+        <textarea id="teamInput" placeholder="e.g.,&#10;Father of physics&#10;(((Moon 🥶))))&#10;London buoy&#10;Megadolla&#10;Allan fc" aria-label="Enter team names, one per line"></textarea>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <div class="controls-panel">
+            <button onclick="generateFixtures()">Generate Fixtures</button> <button onclick="clearSavedTeams()">Clear Saved Teams</button>
+        </div>
+        
+        <div id="iconGuidanceMessage" class="guidance-message"></div>
+
+        <div id="output"></div>
+    </div> <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         let fixturesText = '';
-        let matchdayMap = {};
+        let matchdayMap = {}; // Stores references to the HTML elements for each matchday
+        let originalHeadingText = ''; // To store the original h2 text
 
+        // On page load: Try to load saved teams and set the footer year
         window.onload = () => {
-            const saved = JSON.parse(localStorage.getItem('savedTeams') || '[]');
-            if (saved.length) {
-                document.getElementById('teamInput').value = saved.join('\n');
-            }
-            // Set the current year in the footer
+            loadTeams(); // Load teams silently on page load
             document.getElementById('year').textContent = new Date().getFullYear();
+            originalHeadingText = document.querySelector('.container h2').textContent; // Store original heading
+
+            // Add event listener for the leg toggle
+            document.getElementById('legToggle').addEventListener('change', (event) => {
+                const teams = document.getElementById('teamInput').value.trim().split('\n').map(t => t.trim()).filter(Boolean);
+                // Only regenerate if there are valid teams entered AND fixtures have been generated at least once
+                if (teams.length >= 2 && Object.keys(matchdayMap).length > 0) {
+                    generateFixtures(); // Regenerate fixtures on toggle change
+                }
+            });
+
+            // Add event listener for auto-saving teams on input change
+            document.getElementById('teamInput').addEventListener('input', saveTeamsAutomatically);
         };
 
+        // --- Team Management Functions ---
+        function saveTeamsAutomatically() {
+            const teams = document.getElementById('teamInput').value.trim().split('\n').map(t => t.trim()).filter(Boolean);
+            localStorage.setItem('savedTeams', JSON.stringify(teams));
+        }
+
+        function loadTeams() {
+            const saved = JSON.parse(localStorage.getItem('savedTeams') || '[]');
+            const teamInput = document.getElementById('teamInput');
+            if (saved.length) {
+                teamInput.value = saved.join('\n');
+            }
+        }
+
+        // MODIFIED: Clear Saved Teams also clears generated fixtures and hides guidance message
+        function clearSavedTeams() {
+            if (confirm('Are you sure you want to clear all automatically saved teams and current fixtures? This cannot be undone.')) {
+                localStorage.removeItem('savedTeams');
+                document.getElementById('teamInput').value = ''; // Clear the textarea
+
+                // Clear existing fixtures from display and internal map
+                document.getElementById('output').innerHTML = '';
+                document.getElementById('matchdaySelector').innerHTML = '<option value="">Select Matchday</option>';
+                matchdayMap = {}; // Reset the map
+                fixturesText = ''; // Clear the text (though not directly displayed, good practice)
+
+                // Hide the guidance message and revert heading
+                const guidanceMessage = document.getElementById('iconGuidanceMessage');
+                guidanceMessage.classList.remove('show');
+                guidanceMessage.textContent = ''; // Clear text
+
+                document.querySelector('.container h2').textContent = originalHeadingText; // Revert heading
+
+                alert('All saved teams and generated fixtures cleared.');
+            }
+        }
+        // --- End Team Management Functions ---
+
+        // MODIFIED: generateFixtures now shows the guidance message with actual icons
         function generateFixtures() {
             const input = document.getElementById('teamInput').value.trim();
             const teams = input.split('\n').map(t => t.trim()).filter(Boolean);
             const outputDiv = document.getElementById('output');
             const matchdaySelector = document.getElementById('matchdaySelector');
+            const guidanceMessage = document.getElementById('iconGuidanceMessage');
 
-            // --- Validate for duplicate team names ---
-            const uniqueTeams = new Set(teams.map(team => team.toLowerCase())); // Use Set for uniqueness, convert to lowercase for case-insensitivity
+
+            // --- Validate number of teams ---
+            if (teams.length < 2) {
+                alert('Please enter at least 2 teams to generate fixtures.');
+                return;
+            }
+
+            // --- Validate for duplicate team names (case-insensitive) ---
+            const uniqueTeams = new Set(teams.map(team => team.toLowerCase()));
             if (uniqueTeams.size !== teams.length) {
                 alert('Error: Please ensure all team names are unique. Duplicate team names are not allowed.');
-                return; // Stop the function execution
+                return;
             }
-            // --- End validation ---
+
+            // Get selected number of legs from toggle
+            const selectedNumLegs = document.getElementById('legToggle').checked ? 2 : 1;
 
             outputDiv.innerHTML = '';
-            matchdaySelector.innerHTML = '<option value="">Select Matchday to Download as PDF</option>';
-            matchdayMap = {};
-            fixturesText = ''; 
+            matchdaySelector.innerHTML = '<option value="">Select Matchday</option>';
+            matchdayMap = {}; // Reset map for new fixtures
+            fixturesText = ''; // Reset text for new fixtures
 
-            
             localStorage.setItem('savedTeams', JSON.stringify(teams));
 
-            
-            const roundRobin = (teams) => {
-                const n = teams.length;
+            // Round Robin Algorithm (Standard)
+            const roundRobin = (currentTeams) => {
+                const n = currentTeams.length;
                 const results = [];
-                let teamList = [...teams]; 
+                let teamList = [...currentTeams];
 
-                
+                // Add a 'BYE' team if odd number of teams for pairing
                 if (n % 2 !== 0) {
                     teamList.push('BYE');
                 }
 
-                
                 for (let round = 0; round < teamList.length - 1; round++) {
                     const roundMatches = [];
-                    // Pair teams: first with last, second with second-to-last, etc.
                     for (let i = 0; i < teamList.length / 2; i++) {
                         const home = teamList[i];
                         const away = teamList[teamList.length - 1 - i];
 
-                        // Only add matches if neither team is 'BYE'
                         if (home !== 'BYE' && away !== 'BYE') {
                             roundMatches.push([home, away]);
                         }
                     }
-                    results.push(roundMatches); 
+                    results.push(roundMatches);
 
-                    // Rotate teams for the next round 
                     const fixed = teamList[0];
-                    const rotated = teamList.slice(1); 
-                    rotated.unshift(rotated.pop()); 
-                    teamList = [fixed, ...rotated]; 
+                    const rotated = teamList.slice(1);
+                    rotated.unshift(rotated.pop());
+                    teamList = [fixed, ...rotated];
                 }
                 return results;
             };
 
-            // Generate fixtures for the first leg
-            const firstLeg = roundRobin(teams);
-            // Generate fixtures for the second leg by swapping home/away from first leg
-            const secondLeg = firstLeg.map(round =>
-                round.map(match => [match[1], match[0]])
-            );
+            const firstLegFixtures = roundRobin(teams);
+            let currentMatchdayNumber = 1;
 
-            // --- FIRST LEG DISPLAY ---
-            let matchday = 1;
+            // Show guidance message immediately after successful generation logic starts
+            // Using innerHTML and actual Font Awesome icon tags for clarity
+            guidanceMessage.innerHTML = "Fixtures Generated! Select a matchday above to Download PDF <i class='fas fa-file-pdf'></i> or Share on WhatsApp <i class='fab fa-whatsapp'></i>";
+            guidanceMessage.classList.add('show');
+            
+            // Optionally, you can scroll to the output if it's not visible
+            outputDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+
             const firstLegHeader = document.createElement('h2');
             firstLegHeader.className = 'section-header';
             firstLegHeader.textContent = '🏆 First Leg Fixtures';
             outputDiv.appendChild(firstLegHeader);
 
-            firstLeg.forEach(round => {
-                fixturesText += `--- First Leg - Matchday ${matchday} ---\n`;
+            firstLegFixtures.forEach(round => {
+                const displayMatchday = currentMatchdayNumber;
+                fixturesText += `--- First Leg - Matchday ${displayMatchday} ---\n`;
                 fixturesText += round.map(m => `${m[0]} vs ${m[1]}`).join('\n') + '\n\n';
 
-                // Create HTML elements for display
                 const matchdayDiv = document.createElement('div');
                 matchdayDiv.className = 'matchday';
-                matchdayDiv.innerHTML = `<h3>Matchday ${matchday} Fixtures</h3>
-                    <table>
-                        <thead><tr><th>Home</th><th>Away</th></tr></thead>
-                        <tbody>
-                            ${round.map(m => `<tr><td>${m[0]}</td><td>${m[1]}</td></tr>`).join('')}
-                        </tbody>
-                    </table>`;
+                matchdayDiv.id = `matchday-${displayMatchday}`;
+                // NEW: Wrap table in .table-responsive div
+                matchdayDiv.innerHTML = `<h3>Matchday ${displayMatchday} Fixtures</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <thead><tr><th>Home</th><th>Away</th></tr></thead>
+                            <tbody>
+                                ${round.map(m => `<tr><td>${m[0]}</td><td>${m[1]}</td></tr>`).join('')}
+                            </tbody>
+                        </table>
+                    </div>`;
                 outputDiv.appendChild(matchdayDiv);
-                matchdayMap[matchday] = matchdayDiv; // Correctly map the div
+                matchdayMap[displayMatchday] = matchdayDiv;
+
                 const option = document.createElement('option');
-                option.value = matchday;
-                option.textContent = `Matchday ${matchday}`;
+                option.value = displayMatchday;
+                option.textContent = `Matchday ${displayMatchday}`;
                 matchdaySelector.appendChild(option);
-                matchday++;
+                currentMatchdayNumber++;
             });
 
-            // --- SECOND LEG DISPLAY ---
-            const secondLegHeader = document.createElement('h2');
-            secondLegHeader.className = 'section-header';
-            secondLegHeader.textContent = '🏆 Second Leg Fixtures';
-            outputDiv.appendChild(secondLegHeader);
+            if (selectedNumLegs === 2) {
+                const secondLegFixtures = firstLegFixtures.map(round =>
+                    round.map(match => [match[1], match[0]])
+                );
 
-            secondLeg.forEach(round => {
-                fixturesText += `--- Second Leg - Matchday ${matchday} ---\n`;
-                fixturesText += round.map(m => `${m[0]} vs ${m[1]}`).join('\n') + '\n\n';
+                const secondLegHeader = document.createElement('h2');
+                secondLegHeader.className = 'section-header';
+                secondLegHeader.textContent = '🏆 Second Leg Fixtures';
+                outputDiv.appendChild(secondLegHeader);
 
-                
-                const matchdayDiv = document.createElement('div');
-                matchdayDiv.className = 'matchday';
-                matchdayDiv.innerHTML = `<h3>Matchday ${matchday} Fixtures</h3>
-                    <table>
-                        <thead><tr><th>Home</th><th>Away</th></tr></thead>
-                        <tbody>
-                            ${round.map(m => `<tr><td>${m[0]}</td><td>${m[1]}</td></tr>`).join('')}
-                        </tbody>
-                    </table>`;
-                outputDiv.appendChild(matchdayDiv);
-                matchdayMap[matchday] = matchdayDiv; // Correctly map the div
-                const option = document.createElement('option');
-                option.value = matchday;
-                option.textContent = `Matchday ${matchday}`;
-                matchdaySelector.appendChild(option);
+                secondLegFixtures.forEach(round => {
+                    const displayMatchday = currentMatchdayNumber;
+                    fixturesText += `--- Second Leg - Matchday ${displayMatchday} ---\n`;
+                    fixturesText += round.map(m => `${m[0]} vs ${m[1]}`).join('\n') + '\n\n';
 
-                matchday++;
-            });
+                    const matchdayDiv = document.createElement('div');
+                    matchdayDiv.className = 'matchday';
+                    matchdayDiv.id = `matchday-${displayMatchday}`;
+                    // NEW: Wrap table in .table-responsive div
+                    matchdayDiv.innerHTML = `<h3>Matchday ${displayMatchday} Fixtures</h3>
+                        <div class="table-responsive">
+                            <table>
+                                <thead><tr><th>Home</th><th>Away</th></tr></thead>
+                                <tbody>
+                                    ${round.map(m => `<tr><td>${m[0]}</td><td>${m[1]}</td></tr>`).join('')}
+                                </tbody>
+                            </table>
+                        </div>`;
+                    outputDiv.appendChild(matchdayDiv);
+                    matchdayMap[displayMatchday] = matchdayDiv;
+
+                    const option = document.createElement('option');
+                    option.value = displayMatchday;
+                    option.textContent = `Matchday ${displayMatchday}`;
+                    matchdaySelector.appendChild(option);
+                    currentMatchdayNumber++;
+                });
+            }
         }
 
         async function downloadSelectedMatchday() {
             const matchday = document.getElementById('matchdaySelector').value;
-            if (!matchday || !matchdayMap[matchday]) return alert('Select a matchday first.');
+            if (!matchday || !matchdayMap[matchday]) {
+                alert('Please select a matchday first.');
+                return;
+            }
+            
+            const downloadButton = document.getElementById('downloadPdfBtn');
+            downloadButton.classList.add('loading-button');
+
             const node = matchdayMap[matchday];
 
-            const canvas = await html2canvas(node);
-            const imgData = canvas.toDataURL('image/png');
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF();
-            const imgProps = pdf.getImageProperties(imgData);
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`Matchday_${matchday}.pdf`);
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF();
+
+                const canvas = await html2canvas(node, {
+                    scale: 2
+                });
+                const imgData = canvas.toDataURL('image/png');
+
+                const imgProps = pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save(`Matchday_${matchday}_Fixtures.pdf`);
+            } catch (error) {
+                console.error('Error generating or downloading PDF:', error);
+                alert('Failed to generate PDF. Please try again.');
+            } finally {
+                downloadButton.classList.remove('loading-button');
+            }
         }
 
         async function shareSelectedMatchday() {
             const matchday = document.getElementById('matchdaySelector').value;
-            if (!matchday || !matchdayMap[matchday]) return alert('Select a matchday first.');
+            if (!matchday || !matchdayMap[matchday]) {
+                alert('Please select a matchday first.');
+                return;
+            }
             const node = matchdayMap[matchday];
 
-            const canvas = await html2canvas(node);
-            canvas.toBlob(blob => {
-                const file = new File([blob], `Matchday_${matchday}.png`, { type: 'image/png' });
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    navigator.share({
-                        files: [file],
-                        title: `Matchday ${matchday} Fixtures`,
-                        text: `Here is Matchday ${matchday} fixture from Konami Fixtures ⚽`
-                    }).catch(console.error);
-                } else {
-                    alert("Your browser doesn't support image sharing. Try Chrome on Android.");
-                }
-            });
+            try {
+                const canvas = await html2canvas(node);
+                canvas.toBlob(blob => {
+                    const fileName = `Matchday_${matchday}_Fixtures.png`;
+                    const file = new File([blob], fileName, { type: 'image/png' });
+
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        navigator.share({
+                            files: [file],
+                            title: `Efootball Matchday ${matchday} Fixtures`,
+                            text: `Check out Matchday ${matchday} fixtures from the Efootball Fixture Generator! ⚽\n${window.location.origin}/HomePage.html`
+                        }).catch(error => {
+                            console.error('Share failed:', error);
+                            if (error.name !== 'AbortError') {
+                                alert("Sharing failed. Please try again or ensure your device supports this type of sharing.");
+                            }
+                        });
+                    } else {
+                        const whatsappMessage = encodeURIComponent(`*Efootball Matchday ${matchday} Fixtures*\n\n`);
+                        let matchesText = '';
+                        const tableRows = node.querySelectorAll('tbody tr');
+                        tableRows.forEach(row => {
+                            const homeTeam = row.children[0].textContent;
+                            const awayTeam = row.children[1].textContent;
+                            matchesText += `⚽ ${homeTeam} vs ${awayTeam}\n`;
+                        });
+                        const fullMessage = whatsappMessage + encodeURIComponent(matchesText) + encodeURIComponent(`\nGenerated by: ${window.location.origin}/HomePage.html`);
+                        window.open(`https://wa.me/?text=${fullMessage}`, '_blank');
+                    }
+                });
+            } catch (error) {
+                console.error('Error sharing matchday:', error);
+                alert('Failed to prepare for sharing. Please try again.');
+            }
         }
     </script>
-    <a href="https://wa.me/254758819349" target="_blank" id="whatsapp-float" title="Chat on WhatsApp">
+    <a href="https://wa.me/254758819349" target="_blank" id="whatsapp-float" title="Chat on WhatsApp" aria-label="Chat with Admin on WhatsApp">
         <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp" />
-          <span class="whatsapp-label">Contact Admin</span>
+        <span class="whatsapp-label">Contact Admin</span>
     </a>
-    <footer style="text-align: center; font-size: 14px; color: #666; padding: 20px 0;">
-        <hr style="margin-bottom: 10px;">
+    <footer>
         <p>&copy; <span id="year"></span> All rights reserved. Made with ❤️ by ProfKhamis.</p>
     </footer>
 </body>
