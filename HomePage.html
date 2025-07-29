@@ -1077,7 +1077,7 @@
                         navigator.share({
                             files: [file],
                             title: `Efootball Matchday ${matchday} Fixtures`,
-                            text: `Check out Matchday ${matchday} fixtures from the Efootball Fixture Generator! ⚽\n${window.location.origin}/HomePage.html`
+                            text: `Check out Matchday ${matchday} fixtures from the Efootball Fixture Generator! ⚽\n${window.location.origin}`
                         }).catch(error => {
                             console.error('Share failed:', error);
                             if (error.name !== 'AbortError') {
